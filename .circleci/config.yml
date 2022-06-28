@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  slack: circleci/slack@4.1
+  slack: circleci/slack@4.10.1
   aws-cli: circleci/aws-cli@2.0.3
           
 jobs:
@@ -96,7 +96,7 @@ jobs:
             npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical          
 workflows:
-  default:
+  blue-green-deployment:
     jobs:
       - build-frontend
       - build-backend  
