@@ -142,8 +142,8 @@ jobs:
             echo $(aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --filters "Name=tag:project,Values=udapeople" \
-            --output text) >> ~/users/hp/blue-green-autodeploy/.circleci/ansible/inventory.txt
-            cat ~/users/hp/blue-green-autodeploy/.circleci/ansible/inventory.txt
+            --output text) >> C:/users/hp/blue-green-autodeploy/.circleci/ansible/inventory.txt
+            cat C:/users/hp/blue-green-autodeploy/.circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
