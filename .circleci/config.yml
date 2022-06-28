@@ -149,7 +149,7 @@ jobs:
           paths:
             - users/hp/blue-green-autodeploy/.circleci/ansible/inventory.txt
       - destroy-environment:
-          CircleciWorkflow_id: ${CIRCLE_WORKFLOW_ID:0:7}      
+          WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}      
 workflows:
   blue-green-deployment:
     jobs:
