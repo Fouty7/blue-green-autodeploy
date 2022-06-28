@@ -107,5 +107,6 @@ workflows:
           requires: [build-backend]  
       - scan-frontend:
           requires: [build-frontend]
+          context: slack-alert
       - scan-backend:
           requires: [build-backend]        
