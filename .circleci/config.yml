@@ -142,11 +142,11 @@ jobs:
             aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --filters "Name=tag:Project,Values=udapeople" \
-            --output text >> blue-green-autodeploy/.circleci/ansible/inventory.txt
+            --output text >> project/.circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
-            - blue-green-autodeploy/.circleci/ansible/inventory.txt
+            - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure      
                   
 workflows:
