@@ -74,11 +74,7 @@ jobs:
             cd frontend
             npm install
             npm audit fix --audit-level=critical --force
-            npm audit --audit-level=critical
-            exit 1
-      - slack/notify:
-          event: fail
-          template: basic_fail_1      
+            npm audit --audit-level=critical      
   scan-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -108,6 +104,5 @@ workflows:
           requires: [build-backend]  
       - scan-frontend:
           requires: [build-frontend]
-          context: slack-alert
       - scan-backend:
           requires: [build-backend]        
