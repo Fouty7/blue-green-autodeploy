@@ -142,20 +142,11 @@ jobs:
             aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --filters "Name=tag:project,Values=udapeople" \
-<<<<<<< HEAD
             --output text >> ~/blue-green-autodeploy/.circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
             - blue-green-autodeploy/.circleci/ansible/inventory.txt
-=======
-            --output text >> Blue-Green_CI-CD_AutoDeploy/.circleci/ansible/inventory.txt
-            cat Blue-Green_CI-CD_AutoDeploy/.circleci/ansible/inventory.txt
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - Blue-Green_CI-CD_AutoDeploy/.circleci/ansible/inventory.txt
->>>>>>> 4b1e29469343393c6f2f142b3d46cdac0ba6f50e
       - destroy-environment:
           CircleciWorkflow_id: ${CIRCLE_WORKFLOW_ID:0:7}      
 workflows:
