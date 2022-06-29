@@ -175,6 +175,10 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible tar gzip aws-cli
       - restore_cache:
           keys: [backend-build]
       - run:
