@@ -178,7 +178,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible tar gzip aws-cli
+            apk add --update ansible tar npm curl gzip aws-cli
       - restore_cache:
           keys: [backend-build]
       - run:
