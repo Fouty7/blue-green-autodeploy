@@ -289,22 +289,22 @@ jobs:
             apk add --update nodejs ansible tar npm curl gzip aws-cli
       - attach_workspace:
           at: ~/
-      #- run:
-      #    name: Get backend url & smoke test.
-      #    command: |
-      #      export BACKEND_IP=$(aws ec2 describe-instances \
-      #      --query 'Reservations[*].Instances[*].PublicIpAddress' \
-      #      --filters "Name=tag:project,Values=udapeople" \
-      #      --output text)
-      #      export API_URL="http://${BACKEND_IP}:3030"
-      #      echo "${API_URL}"
-      #      echo API_URL="http://${BACKEND_IP}:3030"
-      #      if curl "${API_URL}/api/status" | grep "ok"
-      #      then
-      #        return 0
-      #      else
-      #        return 1
-      #      fi
+      - run:
+          name: Get backend url & smoke test.
+          command: |
+            export BACKEND_IP=$(aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --filters "Name=tag:project,Values=udapeople" \
+            --output text)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+            echo API_URL="http://${BACKEND_IP}:3030"
+            if curl "${API_URL}/api/status" | grep "ok"
+            then
+              return 0
+            else
+              return 1
+            fi
       - run:
           name: Frontend smoke test.
           command: |
