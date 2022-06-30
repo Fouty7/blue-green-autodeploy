@@ -102,7 +102,6 @@ jobs:
           command: |
             cd frontend
             npm i
-            npm install --save-dev webpack@5.73.0
             npm i @types/eslint@8.4.3
             npm update mkdirp --depth 2
             npm update path-parse --depth 3
@@ -122,8 +121,8 @@ jobs:
             cd backend
             npm i
             npm update mkdirp --depth 6
-            npm install --save-dev webpack@5.73.0
             npm i @types/eslint@8.4.3
+            npm install --save-dev webpack@5.73.0
             npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
   deploy-infrastructure:
