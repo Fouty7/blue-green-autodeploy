@@ -285,7 +285,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: Get backend url
+          name: Get backend url & smoke test.
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
@@ -294,11 +294,6 @@ jobs:
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030"
-      - run:
-          name: Backend smoke test.
-          command: |
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
             then
               return 0
