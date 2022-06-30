@@ -262,6 +262,7 @@ jobs:
             cd backend
             npm i
             npm run build
+            cd ..
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
