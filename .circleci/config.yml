@@ -101,8 +101,9 @@ jobs:
           name: Audit & Analyze Frontend
           command: |
             cd frontend
-            npm install
+            npm i
             npm install --save-dev webpack@5.73.0
+            npm i @types/eslint@8.4.3
             npm update mkdirp --depth 2
             npm update path-parse --depth 3
             npm update kind-of --depth 10
@@ -119,10 +120,10 @@ jobs:
           name: Audit & Analyze Backend
           command: |
             cd backend
-            npm install
+            npm i
             npm update mkdirp --depth 6
             npm install --save-dev webpack@5.73.0
-            npm i @types/eslint
+            npm i @types/eslint@8.4.3
             npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
   deploy-infrastructure:
