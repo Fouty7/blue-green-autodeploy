@@ -110,7 +110,7 @@ jobs:
             npm audit --audit-level=critical      
   scan-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: python:3.10-alpine3.16
     steps:
       - checkout
       - restore_cache:
@@ -119,11 +119,7 @@ jobs:
           name: Audit & Analyze Backend
           command: |
             cd backend
-            npm install
-            npm install --save-dev webpack@5.73.0
-            npm update mkdirp --depth 2
-            npm update path-parse --depth 3
-            npm update kind-of --depth 10
+            apk add --update npm
             npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
   deploy-infrastructure:
