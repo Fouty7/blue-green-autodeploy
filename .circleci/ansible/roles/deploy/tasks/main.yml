@@ -32,7 +32,7 @@
   become: yes
   unarchive:
     src: files/artifact.tar.gz
-    dest: ,
+    dest: .
 
 - name: start app
   become: yes
