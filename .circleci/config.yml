@@ -110,7 +110,7 @@ jobs:
             npm audit --audit-level=critical      
   scan-backend:
     docker:
-      - image: python:3.10-alpine3.16
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
