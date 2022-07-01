@@ -309,18 +309,18 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            export URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-west-2.amazonaws.com/#/employees"            
+            export URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"            
             echo $URL
-            if curl ${URL} | grep "Welcome"
+            if cur -s ${URL} | grep "Welcome"
             then
               return 0
             else
               return 1
             fi
-      #- destroy-environment:
-      #    WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
-      #- revert-migrations:
-      #    WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment:
+          WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
+      - revert-migrations:
+          WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
   cloudfront-update:
     docker:
       - image: amazon/aws-cli
