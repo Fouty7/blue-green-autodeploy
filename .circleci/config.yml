@@ -202,7 +202,7 @@ jobs:
       - run:
           name: Run migrations
           command: |
-            cd backend/src/migrations/1555722583168-AddEmployee.ts
+            cd backend/src/migrations/
             npm install
             npm build
             npm run migrations >> migrations_dump.txt
