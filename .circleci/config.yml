@@ -196,14 +196,15 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible tar npm curl gzip aws-cli
+            apk add --update ansible tar npm curl gzip aws-cli nodejs
       - restore_cache:
           keys: [backend-build]
       - run:
           name: Run migrations
           command: |
-            cd backend/src/migrations
+            cd backend/src/migrations/1555722583168-AddEmployee.ts
             npm install
+            npm build
             npm run migrations >> migrations_dump.txt
             ls -al
             cat migrations_dump.txt
