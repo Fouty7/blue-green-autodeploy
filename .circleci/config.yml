@@ -341,12 +341,12 @@ jobs:
 
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
-            --stack-name InitialStack-${CIRCLE_WORKFLOW_ID:0:7} \
-            --parameter-overrides WorkflowID=${CIRCLE_WORKFLOW_ID:0:7} \
+            --stack-name InitialStack \
+            --parameter-overrides WorkflowID=udapeople-${CIRCLE_WORKFLOW_ID:0:7} \
             --tags project=udapeople
 
-            echo OldWorkflowID=${OldWorkflowID}
-            echo Current Workflow ID: ${CIRCLE_WORKFLOW_ID:0:7}
+            echo OldWorkflowID= "${OldWorkflowID}"
+            echo Current Workflow ID: "udapeople-${CIRCLE_WORKFLOW_ID:0:7}"
       - persist_to_workspace:
           root: ~/
           paths: 
@@ -368,7 +368,7 @@ jobs:
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
               --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
             echo Stack names: "${STACKS[@]}"
-            if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
+            if [[ "udapeople-${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
             then
               echo "------------------Delete Confirmed----------------"
               aws s3 rm "s3://${OldWorkflowID}" --recursive
