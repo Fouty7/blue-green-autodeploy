@@ -107,13 +107,8 @@ jobs:
           name: Audit & Analyze Frontend
           command: |
             cd frontend
-            npm i
-            npm i @types/eslint@8.4.3
-            npm update mkdirp --depth 2
-            npm update path-parse --depth 3
-            npm update kind-of --depth 10
-            npm audit fix --audit-level=critical --force
-            npm audit --audit-level=critical      
+            npm install
+            npm audit fix --audit-level=critical
   scan-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -125,12 +120,8 @@ jobs:
           name: Audit & Analyze Backend
           command: |
             cd backend
-            npm i
-            npm update mkdirp --depth 6
-            npm i @types/eslint@8.4.3
-            npm install --save-dev webpack@5.73.0
-            npm audit fix --audit-level=critical --force
-            npm audit --audit-level=critical
+            npm install
+            npm audit fix --audit-level=critical
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -190,28 +181,22 @@ jobs:
           WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
   run-migrations:
     docker:
-      - image: python:3.10-alpine3.16
+      - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update ansible tar npm curl gzip aws-cli nodejs
       - restore_cache:
           keys: [backend-build]
       - run:
-          name: Run migrations
+          name: Run migration
           command: |
-            cd backend/src/migrations/
+            cd backend
             npm install
-            npm run build
-            npm run migrations >> migrations_dump.txt
-            ls -al
+            npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
       - run:
           name: Send migration results to kvdb
           command: |
-            if grep -q "migrations" ~/project/backend/migrations_dump.txt
+            if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
               curl --insecure https://kvdb.io/4cffQecWxoJ7xZxhrhbLMA/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
             fi
@@ -385,6 +370,31 @@ jobs:
             else
               echo "------------------cleanup unsuccessful!------------"
             fi
+  node-exporter-setup:
+    docker:
+      - image: python:3.10-alpine3.16
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["85:08:b0:15:bb:4d:c3:e7:95:24:16:42:60:6a:92:75"]
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update nodejs ansible tar npm curl gzip aws-cli
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Setup Prometheus Node Exporter
+          command: |
+            cd .circleci/ansible
+            cat inventory.txt
+            ansible-playbook -i inventory.txt node-exporter.yml \
+            --key-file ~/.ssh/id_rsa_ab522568df4c3ad5481855d8f93bdfde
+      # Here's where you will add some code to rollback on failure
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}          
 workflows:
   blue-green-deployment:
     jobs:
