@@ -177,6 +177,11 @@ jobs:
           command: |
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
+      - run:
+          name: Install node exporter
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt configure-node-exporter.yml      
       - destroy-environment:
           WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
   run-migrations:
@@ -305,10 +310,10 @@ jobs:
             else
               return 1
             fi
-      #- destroy-environment:
-      #    WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
-      #- revert-migrations:
-      #    WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment:
+          WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
+      - revert-migrations:
+          WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
   cloudfront-update:
     docker:
       - image: amazon/aws-cli
@@ -370,31 +375,31 @@ jobs:
             else
               echo "------------------cleanup unsuccessful!------------"
             fi
-  node-exporter-setup:
-    docker:
-      - image: python:3.10-alpine3.16
-    steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints: ["85:08:b0:15:bb:4d:c3:e7:95:24:16:42:60:6a:92:75"]
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update nodejs ansible tar npm curl gzip aws-cli
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: Setup Prometheus Node Exporter
-          command: |
-            cd .circleci/ansible
-            cat inventory.txt
-            ansible-playbook -i inventory.txt node-exporter.yml \
-            --key-file ~/.ssh/id_rsa_ab522568df4c3ad5481855d8f93bdfde
-      # Here's where you will add some code to rollback on failure
-      - destroy-environment:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - revert-migrations:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}          
+  #node-exporter-setup:
+  #  docker:
+  #    - image: python:3.10-alpine3.16
+  #  steps:
+  #    - checkout
+  #    - add_ssh_keys:
+  #        fingerprints: ["85:08:b0:15:bb:4d:c3:e7:95:24:16:42:60:6a:92:75"]
+  #    - run:
+  #        name: Install dependencies
+  #        command: |
+  #          apk add --update nodejs ansible tar npm curl gzip aws-cli
+  #    - attach_workspace:
+  #        at: ~/
+  #    - run:
+  #        name: Setup Prometheus Node Exporter
+  #        command: |
+  #          cd .circleci/ansible
+  #          cat inventory.txt
+  #          ansible-playbook -i inventory.txt node-exporter.yml \
+  #          --key-file ~/.ssh/id_rsa_ab522568df4c3ad5481855d8f93bdfde
+  #    # Here's where you will add some code to rollback on failure
+  #    - destroy-environment:
+  #        workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+  #    - revert-migrations:
+  #        workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}          
 workflows:
   blue-green-deployment:
     jobs:
