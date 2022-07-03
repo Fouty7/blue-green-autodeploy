@@ -25,3 +25,8 @@
     daemon_reload: yes
     name: node_exporter
     enabled: yes
+
+- name: "start node_exporter"
+  become: true
+  shell: |
+    ./node_exporter
