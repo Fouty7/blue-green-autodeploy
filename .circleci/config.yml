@@ -143,8 +143,9 @@ jobs:
             npm update async --depth 3
             npm update moment --depth 3
             npm update ws --depth 10
-            npm audit --audit-level=critical
             npm audit fix --audit-level=critical
+            npm audit fix --force
+            npm audit --audit-level=critical
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
