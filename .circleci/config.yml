@@ -374,32 +374,7 @@ jobs:
               echo "------------------Stack "udapeople-backend-${OldWorkflowID}" Deleted----------------"
             else
               echo "------------------cleanup unsuccessful!------------"
-            fi
-  #node-exporter-setup:
-  #  docker:
-  #    - image: python:3.10-alpine3.16
-  #  steps:
-  #    - checkout
-  #    - add_ssh_keys:
-  #        fingerprints: ["85:08:b0:15:bb:4d:c3:e7:95:24:16:42:60:6a:92:75"]
-  #    - run:
-  #        name: Install dependencies
-  #        command: |
-  #          apk add --update nodejs ansible tar npm curl gzip aws-cli
-  #    - attach_workspace:
-  #        at: ~/
-  #    - run:
-  #        name: Setup Prometheus Node Exporter
-  #        command: |
-  #          cd .circleci/ansible
-  #          cat inventory.txt
-  #          ansible-playbook -i inventory.txt node-exporter.yml \
-  #          --key-file ~/.ssh/id_rsa_ab522568df4c3ad5481855d8f93bdfde
-  #    # Here's where you will add some code to rollback on failure
-  #    - destroy-environment:
-  #        workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-  #    - revert-migrations:
-  #        workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}          
+            fi         
 workflows:
   blue-green-deployment:
     jobs:
@@ -413,19 +388,19 @@ workflows:
           requires: [build-frontend]
       - scan-backend:
           requires: [build-backend]
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]    
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
-      - smoke-test:
-          requires: [deploy-backend, deploy-frontend]
-      - cloudfront-update:
-          requires: [smoke-test]
-      - cleanup:
-          requires: [cloudfront-update]    
+      #- deploy-infrastructure:
+      #    requires: [test-frontend, test-backend, scan-frontend, scan-backend]    
+      #- configure-infrastructure:
+      #    requires: [deploy-infrastructure]
+      #- run-migrations:
+      #    requires: [configure-infrastructure]
+      #- deploy-frontend:
+      #    requires: [run-migrations]
+      #- deploy-backend:
+      #    requires: [run-migrations]
+      #- smoke-test:
+      #    requires: [deploy-backend, deploy-frontend]
+      #- cloudfront-update:
+      #    requires: [smoke-test]
+      #- cleanup:
+      #    requires: [cloudfront-update]    
