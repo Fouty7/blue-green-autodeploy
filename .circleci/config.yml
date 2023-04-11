@@ -1,5 +1,4 @@
-version: 2.1
-
+version: 2
 orbs:
   slack: circleci/slack@4.10.1 
 commands:
@@ -381,6 +380,7 @@ jobs:
               echo "------------------cleanup unsuccessful!------------"
             fi         
 wokflows:
+  version: 2
   blue-green-deployment:
     jobs:
       - build-frontend
