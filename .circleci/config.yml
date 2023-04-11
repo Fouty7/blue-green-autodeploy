@@ -379,7 +379,7 @@ jobs:
             else
               echo "------------------cleanup unsuccessful!------------"
             fi         
-wokflows:
+workflows:
   version: 2
   blue-green-deployment:
     jobs:
