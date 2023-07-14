@@ -1,4 +1,4 @@
-# Project README
+# Automated Blue-Green Deployment with CircleCI
 
 This project utilizes a CI/CD (Continuous Integration/Continuous Deployment) configuration file for automating the build, test, deployment, and maintenance processes. The CI/CD pipeline is implemented using CircleCI and consists of multiple jobs and workflows. Here is an overview of the project structure and how the CI/CD pipeline is set up.
 
